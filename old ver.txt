@@ -1,0 +1,146 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <iomanip>
+#include <vector>
+using namespace std;
+
+// class Data{
+//     string time[3];
+//     int N_table[5];
+//     string name[15];
+// };
+
+void showData(vector<string> &a, string b[], int c[], int N, int M)
+{
+    cout << setw(12) << "Time/Table";
+    for (int i = 0; i < M; i++)
+    {
+        if (i == 0)
+            cout << setw(8) << c[i];
+        if (i > 0)
+            cout << setw(10) << c[i];
+    }
+    cout << "\n--------------|---------|---------|---------|---------|---------|\n";
+    for (int i = 0; i < N * M; i++)
+    {
+        if (i == 0)
+            cout << setw(12) << b[i];
+        cout << setw(10);
+        cout << a[i];
+        if (i == 14)
+            break;
+        if ((i + 1) % M == 0)
+        {
+            cout << endl;
+            cout << "--------------|---------|---------|---------|---------|---------|\n";
+            cout << setw(12) << b[(i + 1) / M];
+        }
+    }
+    cout << "\n--------------|---------|---------|---------|---------|---------|\n";
+    cout << "Choose time: 10:00-12:00 -> Enter 1\n"; //ใหม่
+    cout << "Choose time: 13:00-15:00 -> Enter 2\n"; //ใหม่
+    cout << "Choose time: 16:00-18:00 -> Enter 3\n"; //ใหม่
+}
+
+void updatefile(vector<string> &status)
+{
+    ofstream new_data("status table.txt");
+    for (int i = 0; i < status.size(); i++)
+        new_data << status[i] << endl;
+    new_data.close();
+}
+
+bool Check(vector<string> &a, int time, int table)
+{
+    int index = (time - 1) * 5 + (table - 1);
+
+    if (a[index] == "Emply")
+    {
+        a[index] = "Booked";
+        return true;
+    }
+    return false;
+}
+
+void receipt(string name, int table, string time)
+{
+    cout << "\n========================================\n";
+    cout << "       TABLE RESERVATION RECEIPT     \n";
+    cout << "========================================\n";
+    cout << left << setw(15) << " Customer" << ": " << name << endl;
+    cout << left << setw(15) << " Table No." << ": " << table << endl;
+    cout << left << setw(15) << " Time" << ": " << time << endl;
+    cout << "----------------------------------------\n";
+    cout << "        Thank you for booking           \n";
+    cout << "========================================\n\n";
+}
+
+int main()
+{
+    // Data Customer = {{"10:00-12:00","13:00-15:00","16:00-18:00"},{1,2,3,4,5},"Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply"};
+    string Nickname;
+    int N_time;
+    int Table;
+    string time[] = {"10:00-12:00", "13:00-15:00", "16:00-18:00"};
+    int N_table[] = {1, 2, 3, 4, 5};
+    string Ans = "Y";
+    int count = 0;
+    int N1 = sizeof(time) / sizeof(time[0]);
+    int N2 = sizeof(N_table) / sizeof(N_table[0]);
+    vector<string> status(N1 * N2);
+
+    ifstream source;
+    source.open("status table.txt"); // เปิดไฟล์ที่จะอ่าน
+    string texline;
+    int number = 0;
+    while (getline(source, texline))
+    {
+        status[number] = texline;
+        number++;
+    }
+    source.close(); // ปิดไฟล์ที่อ่าน
+
+    while(Ans == "Y"){
+    cout << "Welcome to 3Student restaurant\n"; //ใหม่
+    cout << "Please select the table you wish to reserve:\n"; //ใหม่
+    showData(status, time, N_table, N1, N2);
+    cout << "*****************************************************************\n";
+    cout << "[Choose Time] : ";
+    cin >> N_time;
+    while(N_time > 3 || N_time < 1){ //ใหม่
+        cout << "Wrong Choice! Please choose again!\n";
+        cout << "[Choose Time] : ";
+        cin >> N_time;
+    } //ใหม่
+    cout << "[Choose Table] : ";
+    cin >> Table;
+
+    bool x = Check(status, N_time, Table);
+    while (x == false)
+    {
+        cout << "\n";
+        cout << "O ============================================================ O\n";
+        cout << "|  Sorry,Table already booked! Plaese make a new reservation.  |\n";
+        cout << "O ============================================================ O\n";
+        cout << "\n";
+        cout << "[Choose Time] : ";
+        cin >> N_time;
+        cout << "[Choose Table] : ";
+        cin >> Table;
+        x = Check(status, N_time, Table);
+    }
+
+    cout << "Please write your nickname no more 5 characters\n";
+    cout << "[Nickname] : ";
+    cin >> Nickname;
+
+    updatefile(status);
+    receipt(Nickname, Table, time[N_time - 1]);
+    count++; //ใหม่ ให้นับเพื่อไม่ได้ผู้ใช้เลือกเกิน15โต๊ะ
+    if(count == 15) break; //ใหม่
+    cout << "Would you like to make an additional booking? (Y/N): " ; //ใหม่
+    cin >> Ans; //ใหม่
+    }
+    return 0;
+}
