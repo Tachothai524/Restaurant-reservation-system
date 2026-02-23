@@ -15,7 +15,7 @@ using namespace std;
 
 void showData(vector<string> &a, string b[], int c[], int N, int M)
 {
-    cout << setw(12) << "Time/Table";
+    cout << right << setw(12) << "Time/Table";
     for (int i = 0; i < M; i++)
     {
         if (i == 0)
