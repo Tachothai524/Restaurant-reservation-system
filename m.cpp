@@ -13,6 +13,15 @@ using namespace std;
 //     string name[15];
 // };
 
+void chekdata_cin(int &input)
+{
+    if(cin.fail()){
+        cin.clear(); // ล้างค่า cin ออก
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        input = 0;
+    }   
+}
+
 void showData(vector<string> &a, string b[], int c[], int N, int M)
 {
     cout << right << setw(12) << "Time/Table";
@@ -29,12 +38,15 @@ void showData(vector<string> &a, string b[], int c[], int N, int M)
         if (i == 0)
             cout << setw(12) << b[i];
         cout << setw(10);
+
         if (a[i] == "Emply")
             cout << "Emply";
         else
             cout << "Booked";
+        
         if (i == 14)
             break;
+
         if ((i + 1) % M == 0)
         {
             cout << endl;
@@ -157,20 +169,24 @@ int main()
 
         cout << "[Choose Time] : ";
         cin >> N_time;
+        chekdata_cin(N_time);
 
         while (N_time < 1 || N_time > 3)
         {
             cout << "Wrong Choice! Please choose again: ";
             cin >> N_time;
+            chekdata_cin(N_time);
         }
 
         cout << "[Choose Table] : ";
         cin >> Table;
+        chekdata_cin(Table);
 
         while (Table < 1 || Table > 5)
         {
             cout << "Wrong Table! Please choose again: ";
             cin >> Table;
+            chekdata_cin(Table);
         }
 
         int index = (N_time - 1) * 5 + (Table - 1);
