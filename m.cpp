@@ -169,24 +169,24 @@ int main()
 
         cout << "[Choose Time] : ";
         cin >> N_time;
-        chekdata_cin(N_time);
+        chekdata_cin(N_time); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
 
         while (N_time < 1 || N_time > 3)
         {
             cout << "Wrong Choice! Please choose again: ";
             cin >> N_time;
-            chekdata_cin(N_time);
+            chekdata_cin(N_time); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
         }
 
         cout << "[Choose Table] : ";
         cin >> Table;
-        chekdata_cin(Table);
+        chekdata_cin(Table); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
 
         while (Table < 1 || Table > 5)
         {
             cout << "Wrong Table! Please choose again: ";
             cin >> Table;
-            chekdata_cin(Table);
+            chekdata_cin(Table); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
         }
 
         int index = (N_time - 1) * 5 + (Table - 1);
