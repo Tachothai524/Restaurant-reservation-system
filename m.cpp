@@ -13,9 +13,19 @@ using namespace std;
 //     string name[15];
 // };
 
-void chekdata_cin(int &input)
+string toUpperStr(string x) //ทำให้ค่าเข้ามาเป็นพิมพ์ใหญ่ทุกตัว
 {
-    if(cin.fail()){
+    string y = x;
+
+    for(int i = 0; i < x.size(); i++){
+        y[i] = toupper(x[i]);  
+    }
+    return y;
+}
+
+void chekdata_cin(int &input) //เช็คว่า cin ที่เข้าไปนั้นทำให้เกิด error ไหม ถ้าใช่ให้ล้างค่าออกและเปลี่ยนค่านั้นเป็น 0
+{
+    if(cin.fail()){ //เช็คว่า cin ที่เข้าไปนั้นทำให้เกิด error ไหม
         cin.clear(); // ล้างค่า cin ออก
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         input = 0;
@@ -101,12 +111,20 @@ bool searchByName(vector<string> &status, string time[], int N1, int N2)
 
     for (int i = 0; i < status.size(); i++)
     {
-        if (status[i] == name)
+        if ( toUpperStr(status[i]) == toUpperStr(name) )
         {
             int timeIndex = i / N2;
             int tableIndex = i % N2;
 
-            receipt(name, tableIndex + 1, time[timeIndex]);
+            receipt(status[i], tableIndex + 1, time[timeIndex]);
+            
+        }
+    }
+
+    for (int i = 0; i < status.size(); i++)
+    {
+        if ( toUpperStr(status[i]) == toUpperStr(name) )
+        {
             return true;
         }
     }
@@ -150,6 +168,7 @@ int main()
     cout << "Have you already booked a table? (Y/N): ";
     string firstChoice;
     cin >> firstChoice;
+    firstChoice = (firstChoice);
 
      if (firstChoice == "Y" || firstChoice == "y")
     {
@@ -162,7 +181,7 @@ int main()
     Ans = "Y";
 
     // เข้าหน้าจองโต๊ะ
-    while (Ans == "Y" || Ans == "y")
+    while (Ans == "Y")
     {
         cout << "\nPlease select the table you wish to reserve:\n";
         showData(status, time, N_table, N1, N2);
@@ -197,12 +216,15 @@ int main()
             cout << "[Enter Nickname] : ";
             cin >> Nickname;
 
+            cout << Nickname << "\n";
+
             status[index] = Nickname;   // เก็บชื่อจริง
             updatefile(status);
 
             receipt(Nickname, Table, time[N_time - 1]);
             cout << "Would you like to make another booking? (Y/N): ";
             cin >> Ans;
+            Ans = toUpperStr(Ans);
         }
         else
         {
