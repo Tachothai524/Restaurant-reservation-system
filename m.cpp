@@ -7,13 +7,13 @@
 #include <thread>
 #include <limits>
 #include <cctype>
+#include<windows.h>
 using namespace std;
 
-// class Data{
-//     string time[3];
-//     int N_table[5];
-//     string name[15];
-// };
+void setTextColor(int color) {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, color);
+}
 
 string toUpperStr(string x) //ทำให้ค่าเข้ามาเป็นพิมพ์ใหญ่ทุกตัว
 {
@@ -51,11 +51,16 @@ void showData(vector<string> &a, string b[], int c[], int N, int M)
             cout << setw(12) << b[i];
         cout << setw(10);
 
-        if (a[i] == "Emply")
+        if (a[i] == "Emply"){
+            setTextColor(2);
             cout << "Emply";
-        else
+            setTextColor(7);
+        }else{
+            setTextColor(8);
             cout << "Booked";
-        
+            setTextColor(7);
+        }
+
         if (i == 14)
             break;
 
@@ -130,17 +135,17 @@ bool searchByName(vector<string> &status, string time[], int N1, int N2)
             return true;
         }
     }
-
+    setTextColor(12);
     cout << "\nO ================================= O\n";
     cout << "| No booking found under this name. |\n";
     cout << "O ================================= O\n\n";
+    setTextColor(7);
 
     return false;
 }
 
 int main()
 {
-    // Data Customer = {{"10:00-12:00","13:00-15:00","16:00-18:00"},{1,2,3,4,5},"Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply","Emply"};
     string Nickname;
     int N_time;
     int Table;
@@ -198,23 +203,27 @@ for (char &c : firstChoice)
 
         cout << "[Choose Time] : ";
         cin >> N_time;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         chekdata_cin(N_time); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
 
         while (N_time < 1 || N_time > 3)
         {
             cout << "Wrong Choice! Please choose again: ";
             cin >> N_time;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             chekdata_cin(N_time); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
         }
 
         cout << "[Choose Table] : ";
         cin >> Table;
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
         chekdata_cin(Table); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
 
         while (Table < 1 || Table > 5)
         {
             cout << "Wrong Table! Please choose again: ";
             cin >> Table;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
             chekdata_cin(Table); // เช็คว่า cin นั้น error ไหม ถ้า error ให้เคลียและเปลี่ยน cin นั้น = 0
         }
 
@@ -224,7 +233,7 @@ for (char &c : firstChoice)
         {
             
             cout << "[Enter Nickname] : ";
-            cin >> Nickname;
+            getline(cin,Nickname);
 
             status[index] = Nickname;   // เก็บชื่อจริง
             updatefile(status);
@@ -243,16 +252,18 @@ for (char &c : firstChoice)
                     c = tolower(c);
             }
 
-            if (Ans == "yes")
+            if (Ans == "yes" || Ans == "y")
                 Ans = "Y";
-            if (Ans == "no")
+            if (Ans == "no" || Ans == "n")
                 Ans = "N";
         }
         else
         {
+            setTextColor(12);
             cout << "\nO ========================================================= O\n";
             cout << "|     Sorry, Table already booked! Please choose again.     |\n";
             cout << "O ========================================================= O\n";
+            setTextColor(7);
 
             this_thread::sleep_for(chrono::seconds(2));
         }
