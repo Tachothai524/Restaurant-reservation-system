@@ -226,8 +226,6 @@ for (char &c : firstChoice)
             cout << "[Enter Nickname] : ";
             cin >> Nickname;
 
-            cout << Nickname << "\n";
-
             status[index] = Nickname;   // เก็บชื่อจริง
             updatefile(status);
 
