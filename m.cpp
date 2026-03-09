@@ -5,6 +5,8 @@
 #include <vector>
 #include <chrono>
 #include <thread>
+#include <limits>
+#include <cctype>
 using namespace std;
 
 // class Data{
@@ -168,14 +170,22 @@ int main()
     cout << "Have you already booked a table? (Y/N): ";
     string firstChoice;
     cin >> firstChoice;
-    firstChoice = (firstChoice);
+for (char &c : firstChoice)
+        c = tolower(c);
 
-     if (firstChoice == "Y" || firstChoice == "y")
+    while (firstChoice != "y" && firstChoice != "yes" && firstChoice != "n" && firstChoice != "no") // แก้ให้ต้องใส่ input ใหม่จนกว่าถูก
+    {
+        cout << "Please answer (Yes/No/Y/N): ";
+        cin >> firstChoice;
+        for (char &c : firstChoice)
+            c = tolower(c);
+    }
+
+    if (firstChoice == "y" || firstChoice == "yes")
     {
         bool found = searchByName(status, time, N1, N2);
-
         if (found)
-            return 0;   // เจอแล้วจบโปรแกรมเลย
+            return 0;
     }
 
     Ans = "Y";
@@ -224,7 +234,21 @@ int main()
             receipt(Nickname, Table, time[N_time - 1]);
             cout << "Would you like to make another booking? (Y/N): ";
             cin >> Ans;
-            Ans = toUpperStr(Ans);
+            for (char &c : Ans)
+                c = tolower(c);
+
+            while (Ans != "y" && Ans != "yes" && Ans != "n" && Ans != "no") // แก้ให้ต้องใส่ input ใหม่จนกว่าถูก
+            {
+                cout << "Please answer (Yes/No/Y/N): ";
+                cin >> Ans;
+                for (char &c : Ans)
+                    c = tolower(c);
+            }
+
+            if (Ans == "yes")
+                Ans = "Y";
+            if (Ans == "no")
+                Ans = "N";
         }
         else
         {
