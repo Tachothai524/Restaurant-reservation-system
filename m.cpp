@@ -8,6 +8,7 @@
 #include <limits>
 #include <cctype>
 #include<windows.h>
+#include<algorithm>
 using namespace std;
 
 void setTextColor(int color) {
@@ -156,6 +157,7 @@ int main()
     int N1 = sizeof(time) / sizeof(time[0]);
     int N2 = sizeof(N_table) / sizeof(N_table[0]);
     vector<string> status(N1 * N2);
+    bool isAllSpaces;
 
     ifstream source;
     source.open("status table.txt"); // เปิดไฟล์ที่จะอ่าน
@@ -234,6 +236,12 @@ for (char &c : firstChoice)
             
             cout << "[Enter Nickname] : ";
             getline(cin,Nickname);
+
+            // isAllSpaces = all_of(Nickname.begin(),Nickname.end(),[](unsigned char ch) {return isspace(ch);});
+            while(Nickname.empty() || Nickname == " "){
+                cout << "Please Write Nickname : ";
+                getline(cin,Nickname);
+            }
 
             status[index] = Nickname;   // เก็บชื่อจริง
             updatefile(status);
