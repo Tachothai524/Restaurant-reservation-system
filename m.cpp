@@ -237,10 +237,11 @@ for (char &c : firstChoice)
             cout << "[Enter Nickname] : ";
             getline(cin,Nickname);
 
-            // isAllSpaces = all_of(Nickname.begin(),Nickname.end(),[](unsigned char ch) {return isspace(ch);});
-            while(Nickname.empty() || Nickname == " "){
+            isAllSpaces = all_of(Nickname.begin(),Nickname.end(),[](unsigned char ch) {return isspace(ch);});
+            while(Nickname.empty() || isAllSpaces){
                 cout << "Please Write Nickname : ";
                 getline(cin,Nickname);
+                isAllSpaces = all_of(Nickname.begin(),Nickname.end(),[](unsigned char ch) {return isspace(ch);});
             }
 
             status[index] = Nickname;   // เก็บชื่อจริง
